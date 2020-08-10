@@ -30,7 +30,8 @@
       {
         "allowArgumentsExplicitlyTypedAsAny": true
       }
-    ]
+    ],
+    "@typescript-eslint/no-empty-function": "off"
   },
   "overrides": [
     {
