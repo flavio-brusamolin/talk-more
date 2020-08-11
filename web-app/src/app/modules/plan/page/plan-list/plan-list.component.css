@@ -1,0 +1,85 @@
+#plan-list {
+  padding: 5rem 0;
+}
+
+#plan-list main .title-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 35rem;
+}
+
+#plan-list main .title-container h1 {
+  font-weight: 600;
+  font-size: 3rem;
+}
+
+#plan-list main .title-container p {
+  font-weight: 400;
+  font-size: 1.35rem;
+  line-height: 2rem;
+  margin-top: 1.5rem;
+}
+
+#plan-list main .plans {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5rem;
+}
+
+#plan-list main .plans .plan-item + .plan-item {
+  margin-top: 3rem;
+}
+
+@media (min-width: 700px) {
+  #plan-list {
+    max-width: 100%;
+    padding: 8rem 0;
+  }
+
+  #plan-list main {
+    max-width: 110rem;
+    margin: 0 auto;
+  }
+
+  #plan-list main .title-container {
+    align-items: center;
+    max-width: 100%;
+  }
+
+  #plan-list main .title-container p {
+    margin-top: 0.5rem;
+  }
+
+  #plan-list main .plans {
+    flex-direction: row;
+    overflow-x: auto;
+    margin-top: 7rem;
+    padding-bottom: 1rem;
+  }
+
+  #plan-list main .plans::-webkit-scrollbar {
+    background-color: var(--color-dark-background);
+    height: 0.6rem;
+    border-radius: 0.8rem;
+  }
+
+  #plan-list main .plans::-webkit-scrollbar-thumb {
+    background-color: var(--color-light-gray);
+    border-radius: 0.8rem;
+  }
+
+  #plan-list main .plans .plan-item {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  #plan-list main .plans .plan-item:last-child {
+    margin-right: auto;
+  }
+
+  #plan-list main .plans .plan-item + .plan-item {
+    margin-top: 0;
+    margin-left: 3rem;
+  }
+}

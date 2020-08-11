@@ -2,7 +2,12 @@
 :root {
   font-size: 60%;
 
-  --color-background: #1d384d;
+  --color-background: #121212;
+  --color-text-base: #f0f0f7;
+  --color-line-divider: #ffffff1a;
+  --color-card: #282828;
+  --color-dark-background: #070707;
+  --color-light-gray: #5a5a5a;
 }
 
 * {
@@ -11,10 +16,36 @@
   box-sizing: border-box;
 }
 
-html, body {
+html, body, #root {
   height: 100vh;
 }
 
 body {
   background: var(--color-background);
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body,
+input,
+button,
+textarea {
+  font: 500 1.6rem Montserrat;
+  color: var(--color-text-base);
+}
+
+.container {
+  width: 90vw;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+@media (min-width: 700px) {
+  :root {
+    font-size: 62.5%;
+  }
 }
