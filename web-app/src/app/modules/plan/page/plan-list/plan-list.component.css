@@ -27,7 +27,7 @@
   margin-top: 5rem;
 }
 
-#plan-list main .plans .plan-item + .plan-item {
+#plan-list main .plans app-plan-item + app-plan-item {
   margin-top: 3rem;
 }
 
@@ -69,16 +69,16 @@
     border-radius: 0.8rem;
   }
 
-  #plan-list main .plans .plan-item {
+  #plan-list main .plans app-plan-item {
     flex: 0 0 auto;
     margin-left: auto;
   }
 
-  #plan-list main .plans .plan-item:last-child {
+  #plan-list main .plans app-plan-item:last-child {
     margin-right: auto;
   }
 
-  #plan-list main .plans .plan-item + .plan-item {
+  #plan-list main .plans app-plan-item + app-plan-item {
     margin-top: 0;
     margin-left: 3rem;
   }
