@@ -1,26 +1,19 @@
-<div id="login-form" class="container">
-  <h1>Telzir</h1>
+<app-auth-container>
 
-  <main>
-    <div class="options">
-      <a [routerLink]="['login']">Sign in</a>
-      <a [routerLink]="['signup']">Sign up</a>
+  <form>
+    <div class="input-block">
+      <label for="email">E-mail</label>
+      <input type="text" id="email" />
     </div>
 
-    <form>
-      <div class="input-block">
-        <label for="email">E-mail</label>
-        <input type="text" id="email" />
-      </div>
+    <div class="input-block">
+      <label for="password">Senha</label>
+      <input type="password" id="password" />
+    </div>
 
-      <div class="input-block">
-        <label for="password">Senha</label>
-        <input type="password" id="password" />
-      </div>
+    <button type="submit">
+      Entrar
+    </button>
+  </form>
 
-      <button type="submit">
-        Entrar
-      </button>
-    </form>
-  </main>
-</div>
+</app-auth-container>

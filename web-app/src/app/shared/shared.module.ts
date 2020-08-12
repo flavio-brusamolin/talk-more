@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
+import { RouterModule } from '@angular/router'
+
+import { AuthContainerComponent } from './auth-container/auth-container.component'
 
 @NgModule({
-  declarations: [],
+  declarations: [AuthContainerComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   exports: [
-    CommonModule
+    CommonModule,
+
+    AuthContainerComponent
   ]
 })
 export class SharedModule { }
