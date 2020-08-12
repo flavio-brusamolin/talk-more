@@ -20,8 +20,8 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'login',
-    loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule)
+    path: 'signin',
+    loadChildren: () => import('./modules/signin/signin.module').then(m => m.SigninModule)
   },
   {
     path: 'signup',
