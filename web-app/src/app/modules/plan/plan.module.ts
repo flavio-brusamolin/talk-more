@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
+
+import { SharedModule } from 'src/app/shared/shared.module'
 
 import { PlanRoutingModule } from './plan-routing.module'
 
@@ -12,7 +13,7 @@ import { PlanItemComponent } from './components/plan-item/plan-item.component'
     PlanItemComponent
   ],
   imports: [
-    CommonModule,
+    SharedModule,
 
     PlanRoutingModule
   ]

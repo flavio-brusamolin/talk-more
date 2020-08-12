@@ -8,6 +8,9 @@
   --color-card: #282828;
   --color-dark-background: #070707;
   --color-light-gray: #5a5a5a;
+  --color-primary: #22c9a8;
+  --color-dark-primary: #20af93;
+  --color-input-background: #333333;
 }
 
 * {

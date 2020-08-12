@@ -28,6 +28,7 @@
   letter-spacing: 0.06rem;
   text-decoration: none;
   transition: opacity 0.2s;
+  color: var(--color-text-base);
 }
 
 .top-navbar .nav-container .nav-options a:hover {
