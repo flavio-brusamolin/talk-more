@@ -1,11 +1,12 @@
 <app-auth-container>
 
-  <form [formGroup]="form" (ngSubmit)="signin()">
+  <form [formGroup]="form" (ngSubmit)="signup()">
+    <app-input label="Nome" name="name" type="text" formControlName="name"></app-input>
     <app-input label="E-mail" name="email" type="text" formControlName="email"></app-input>
     <app-input label="Senha" name="password" type="password" formControlName="password"></app-input>
 
     <button type="submit" [disabled]="!form.valid">
-      Entrar
+      Registrar-se
     </button>
   </form>
 

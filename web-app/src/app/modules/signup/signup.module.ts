@@ -2,10 +2,16 @@ import { NgModule } from '@angular/core'
 
 import { SharedModule } from 'src/app/shared/shared.module'
 
+import { SignupRoutingModule } from './signup-routing.module'
+
+import { SignupFormComponent } from './page/signup-form/signup-form.component'
+
 @NgModule({
-  declarations: [],
+  declarations: [SignupFormComponent],
   imports: [
-    SharedModule
+    SharedModule,
+
+    SignupRoutingModule
   ]
 })
 export class SignupModule { }

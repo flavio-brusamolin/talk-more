@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 @Component({
-  selector: 'app-signin-form',
-  templateUrl: './signin-form.component.html',
-  styleUrls: ['./signin-form.component.css']
+  selector: 'app-signup-form',
+  templateUrl: './signup-form.component.html',
+  styleUrls: ['./signup-form.component.css']
 })
-export class SigninFormComponent implements OnInit {
+export class SignupFormComponent implements OnInit {
   form: FormGroup
 
   constructor (private formBuilder: FormBuilder) { }
@@ -17,12 +17,13 @@ export class SigninFormComponent implements OnInit {
 
   private initializeForms (): void {
     this.form = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     })
   }
 
-  signin (): void {
+  signup (): void {
     console.log(this.form.value)
   }
 }
