@@ -37,7 +37,7 @@ const makeSut = (): SutTypes => {
 describe('SignUp Controller', () => {
   test('Should call Validator with correct values', async () => {
     const { sut, validatorStub } = makeSut()
-    const validateSpy = spyOn(validatorStub, 'validate')
+    const validateSpy = jest.spyOn(validatorStub, 'validate')
 
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
