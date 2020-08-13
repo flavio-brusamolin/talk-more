@@ -34,7 +34,7 @@
 }
 
 #plan-list main .plans app-plan-item + app-plan-item {
-  margin-top: 3.2rem;
+  margin-top: 3rem;
 }
 
 @media (min-width: 580px) {
@@ -92,6 +92,6 @@
 
   #plan-list main .plans app-plan-item + app-plan-item {
     margin-top: 0;
-    margin-left: 3.2rem;
+    margin-left: 3rem;
   }
 }
