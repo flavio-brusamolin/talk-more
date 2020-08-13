@@ -1,6 +1,69 @@
 .plan-item {
   background-color: var(--color-card);
-  padding: 13rem 10rem;
+  padding: 3rem 2rem;
   text-align: center;
   border-radius: 0.8rem;
+}
+
+.plan-item header span {
+  font-weight: 600;
+  font-size: 1.73rem;
+}
+
+.plan-item main {
+  margin: 4.5rem 0;
+}
+
+.plan-item main span {
+  color: var(--color-dark-white);
+  font-size: 1.45rem;
+}
+
+.plan-item main .price {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.plan-item main .price label {
+  color: var(--color-primary);
+  padding-top: 1rem;
+}
+
+.plan-item main .price strong {
+  font-size: 5rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: 0 0.2rem 0 0.9rem;
+}
+
+.plan-item main .price span {
+  padding-bottom: 1rem;
+  font-size: 1.4rem;
+  color: var(--color-dark-white);
+  align-self: flex-end;
+}
+
+.plan-item footer button {
+  width: 75%;
+  padding: 0.8rem;
+  border-radius: 2rem;
+  outline: 0;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-card);
+  font-size: 1.45rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.plan-item footer button:hover {
+  background-color: var(--color-dark-primary);
+}
+
+@media (min-width: 700px) {
+  .plan-item main {
+    margin: 5rem 0;
+  }
 }
