@@ -1,7 +1,7 @@
 import { SignUpController, SignUpModel } from './signup-controller'
 import { Validator, HttpRequest } from '../../protocols'
 import { MissingParamError, DuplicateEmailError } from '../../errors'
-import { badRequest, serverError, conflict } from '../../helpers/http-helper'
+import { badRequest, serverError, conflict, ok } from '../../helpers/http-helper'
 import { AddUser, AddUserModel } from '../../../domain/use-cases/add-user'
 import { User } from '../../../domain/models/user'
 import { AuthenticateUser, AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
@@ -148,5 +148,17 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return an ok response on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(ok({
+      user: 'valid_name',
+      accessToken: 'any_token'
+    }))
   })
 })
