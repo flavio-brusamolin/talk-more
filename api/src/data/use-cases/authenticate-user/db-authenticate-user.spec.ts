@@ -50,4 +50,16 @@ describe('DbAuthenticateUser Use Case', () => {
 
     expect(loadByEmailSpy).toHaveBeenCalledWith(credentials.email)
   })
+
+  test('Should throw if LoadUserByEmailRepository throws', async () => {
+    const { sut, loadUserByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const credentials = makeFakeCredentials()
+    const promise = sut.authenticate(credentials)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
