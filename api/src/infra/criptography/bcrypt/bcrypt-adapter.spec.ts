@@ -11,8 +11,9 @@ jest.mock('bcrypt', () => ({
   }
 }))
 
+const salt = 12
 const makeSut = (): BCryptAdapter => {
-  return new BCryptAdapter()
+  return new BCryptAdapter(salt)
 }
 
 describe('BCrypt Adapter', () => {
@@ -22,7 +23,7 @@ describe('BCrypt Adapter', () => {
 
     await sut.hash('any_value')
 
-    expect(hashSpy).toHaveBeenCalledWith('any_value', 12)
+    expect(hashSpy).toHaveBeenCalledWith('any_value', salt)
   })
 
   test('Should throw if bcrypt hash throws', async () => {

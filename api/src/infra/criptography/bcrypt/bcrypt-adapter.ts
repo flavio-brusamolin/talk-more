@@ -2,7 +2,7 @@ import { Hasher, HashComparator } from '../../../data/protocols'
 import bcrypt from 'bcrypt'
 
 export class BCryptAdapter implements Hasher, HashComparator {
-  private readonly salt = 12
+  public constructor (private readonly salt: number) {}
 
   public async hash (value: string): Promise<string> {
     return await bcrypt.hash(value, this.salt)
