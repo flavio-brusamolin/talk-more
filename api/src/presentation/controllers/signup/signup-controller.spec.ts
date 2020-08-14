@@ -4,6 +4,7 @@ import { MissingParamError, DuplicateEmailError } from '../../errors'
 import { badRequest, serverError, conflict } from '../../helpers/http-helper'
 import { AddUser, AddUserModel } from '../../../domain/use-cases/add-user'
 import { User } from '../../../domain/models/user'
+import { AuthenticateUser, AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
 
 const makeFakeRequest = (): HttpRequest<SignUpModel> => ({
   body: {
@@ -40,20 +41,33 @@ const makeAddUser = (): AddUser => {
   return new AddUserStub()
 }
 
+const makeAuthenticateUser = (): AuthenticateUser => {
+  class AuthenticateUserStub implements AuthenticateUser {
+    public async authenticate (_credentials: AuthenticateUserModel): Promise<string> {
+      return 'any_token'
+    }
+  }
+
+  return new AuthenticateUserStub()
+}
+
 interface SutTypes {
   validatorStub: Validator
   addUserStub: AddUser
+  authenticateUserStub: AuthenticateUser
   sut: SignUpController
 }
 
 const makeSut = (): SutTypes => {
   const validatorStub = makeValidator()
   const addUserStub = makeAddUser()
-  const sut = new SignUpController(validatorStub, addUserStub)
+  const authenticateUserStub = makeAuthenticateUser()
+  const sut = new SignUpController(validatorStub, addUserStub, authenticateUserStub)
 
   return {
     validatorStub,
     addUserStub,
+    authenticateUserStub,
     sut
   }
 }
@@ -109,5 +123,18 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(conflict(new DuplicateEmailError()))
+  })
+
+  test('Should call AuthenticateUser with correct values', async () => {
+    const { sut, authenticateUserStub } = makeSut()
+    const authenticateSpy = jest.spyOn(authenticateUserStub, 'authenticate')
+
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+
+    expect(authenticateSpy).toHaveBeenCalledWith({
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
   })
 })
