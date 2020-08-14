@@ -33,7 +33,7 @@ const makeValidator = (): Validator => {
 
 const makeAddUser = (): AddUser => {
   class AddUserStub implements AddUser {
-    public async add (_user: AddUserModel): Promise<User> {
+    public async add (_userData: AddUserModel): Promise<User> {
       return makeFakeUser()
     }
   }
