@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse, Validator } from '../../protocols'
-import { badRequest, serverError, conflict } from '../../helpers/http-helper'
+import { badRequest, serverError, conflict, ok } from '../../helpers/http-helper'
 import { AddUser } from '../../../domain/use-cases/add-user'
 import { DuplicateEmailError } from '../../errors'
 import { AuthenticateUser } from '../../../domain/use-cases/authenticate-user'
@@ -26,18 +26,24 @@ export class SignUpController {
 
       const { name, email, password } = httpRequest.body
 
-      await this.addUser.add({
+      const user = await this.addUser.add({
         name,
         email,
         password
       })
+      if (!user) {
+        return conflict(new DuplicateEmailError())
+      }
 
-      await this.authenticateUser.authenticate({
+      const accessToken = await this.authenticateUser.authenticate({
         email,
         password
       })
 
-      return conflict(new DuplicateEmailError())
+      return ok({
+        user: user.name,
+        accessToken
+      })
     } catch (error) {
       return serverError()
     }
