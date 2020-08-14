@@ -140,4 +140,16 @@ describe('DbAuthenticateUser Use Case', () => {
 
     expect(encryptSpy).toHaveBeenCalledWith('valid_id')
   })
+
+  test('Should throw if Encrypter throws', async () => {
+    const { sut, encrypterStub } = makeSut()
+    jest.spyOn(encrypterStub, 'encrypt').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const credentials = makeFakeCredentials()
+    const promise = sut.authenticate(credentials)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
