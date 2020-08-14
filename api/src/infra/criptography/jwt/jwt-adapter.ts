@@ -8,12 +8,6 @@ export class JwtAdapter implements Encrypter {
   ) {}
 
   public async encrypt (plaintext: string): Promise<string> {
-    jwt.sign(
-      { id: plaintext },
-      this.secret,
-      { expiresIn: this.expiresIn }
-    )
-
-    return null
+    return jwt.sign({ id: plaintext }, this.secret, { expiresIn: this.expiresIn })
   }
 }
