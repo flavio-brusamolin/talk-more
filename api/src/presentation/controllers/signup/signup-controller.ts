@@ -40,10 +40,7 @@ export class SignUpController {
         password
       })
 
-      return ok({
-        user: user.name,
-        accessToken
-      })
+      return ok({ accessToken })
     } catch (error) {
       return serverError()
     }
