@@ -1,7 +1,7 @@
 import { SignUpController, SignUpModel } from './signup-controller'
 import { Validator, HttpRequest } from '../../protocols'
-import { MissingParamError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { MissingParamError, DuplicateEmailError } from '../../errors'
+import { badRequest, serverError, conflict } from '../../helpers/http-helper'
 import { AddUser, AddUserModel } from '../../../domain/use-cases/add-user'
 import { User } from '../../../domain/models/user'
 
@@ -99,5 +99,15 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return a conflict error if AddUser returns null', async () => {
+    const { sut, addUserStub } = makeSut()
+    jest.spyOn(addUserStub, 'add').mockReturnValueOnce(null)
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(conflict(new DuplicateEmailError()))
   })
 })
