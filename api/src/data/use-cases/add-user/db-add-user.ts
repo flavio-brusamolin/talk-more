@@ -1,12 +1,20 @@
 import { AddUser, AddUserModel } from '../../../domain/use-cases/add-user'
 import { User } from '../../../domain/models/user'
-import { Hasher } from '../../protocols/hasher'
+import { Hasher, AddUserRepository } from '../../protocols'
 
 export class DbAddUser implements AddUser {
-  public constructor (private readonly hasher: Hasher) {}
+  public constructor (
+    private readonly hasher: Hasher,
+    private readonly addUserRepository: AddUserRepository
+  ) {}
 
   public async add (user: AddUserModel): Promise<User> {
-    await this.hasher.hash(user.password)
+    const hashedPassword = await this.hasher.hash(user.password)
+
+    await this.addUserRepository.add({
+      ...user,
+      password: hashedPassword
+    })
 
     return null
   }
