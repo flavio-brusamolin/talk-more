@@ -78,6 +78,18 @@ describe('DbAddUser Use Case', () => {
     expect(loadByEmailSpy).toHaveBeenCalledWith(userData.email)
   })
 
+  test('Should throw if LoadUserByEmailRepository throws', async () => {
+    const { sut, loadUserByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadUserByEmailRepositoryStub, 'loadByEmail').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const userData = makeFakeUserData()
+    const promise = sut.add(userData)
+
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call Hasher with correct value', async () => {
     const { sut, hasherStub } = makeSut()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
