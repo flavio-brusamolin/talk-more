@@ -1,7 +1,7 @@
 import { SignUpController, SignUpModel } from './signup-controller'
 import { Validator, HttpRequest } from '../../protocols'
-import { MissingParamError } from '../../errors/missing-param-error'
-import { badRequest } from '../../helpers/http-helper'
+import { MissingParamError } from '../../errors'
+import { badRequest, serverError } from '../../helpers/http-helper'
 import { AddUser, AddUserModel } from '../../../domain/use-cases/add-user'
 import { User } from '../../../domain/models/user'
 
@@ -87,5 +87,17 @@ describe('SignUp Controller', () => {
     await sut.handle(httpRequest)
 
     expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return an internal server error if AddUser throws', async () => {
+    const { sut, addUserStub } = makeSut()
+    jest.spyOn(addUserStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(serverError())
   })
 })
