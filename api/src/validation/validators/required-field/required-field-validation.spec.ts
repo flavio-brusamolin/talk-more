@@ -1,11 +1,11 @@
-import { RequiredFieldValidator } from './required-field-validator'
+import { RequiredFieldValidation } from './required-field-validation'
 import { MissingParamError } from '../../../presentation/errors'
 
-const makeSut = (): RequiredFieldValidator => {
-  return new RequiredFieldValidator('field')
+const makeSut = (): RequiredFieldValidation => {
+  return new RequiredFieldValidation('field')
 }
 
-describe('RequiredField Validator', () => {
+describe('RequiredField Validation', () => {
   test('Should return a MissingParamError if validation fails', () => {
     const sut = makeSut()
 
