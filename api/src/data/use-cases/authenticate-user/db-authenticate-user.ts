@@ -1,10 +1,11 @@
 import { AuthenticateUser, AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
-import { LoadUserByEmailRepository, HashComparator } from '../../protocols'
+import { LoadUserByEmailRepository, HashComparator, Encrypter } from '../../protocols'
 
 export class DbAuthenticateUser implements AuthenticateUser {
   public constructor (
     private readonly loadUserByEmailRepository: LoadUserByEmailRepository,
-    private readonly hashComparator: HashComparator
+    private readonly hashComparator: HashComparator,
+    private readonly encrypter: Encrypter
   ) {}
 
   public async authenticate (credentials: AuthenticateUserModel): Promise<string> {
@@ -17,5 +18,7 @@ export class DbAuthenticateUser implements AuthenticateUser {
     if (!passwordMatch) {
       return null
     }
+
+    await this.encrypter.encrypt(user.id)
   }
 }
