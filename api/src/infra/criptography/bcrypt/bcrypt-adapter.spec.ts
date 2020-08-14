@@ -72,4 +72,12 @@ describe('BCrypt Adapter', () => {
 
     expect(match).toBe(false)
   })
+
+  test('Should return true on bcrypt compare success', async () => {
+    const sut = makeSut()
+
+    const match = await sut.compare('any_value', 'any_hash')
+
+    expect(match).toBe(true)
+  })
 })
