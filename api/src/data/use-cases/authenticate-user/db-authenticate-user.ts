@@ -13,6 +13,9 @@ export class DbAuthenticateUser implements AuthenticateUser {
       return null
     }
 
-    await this.hashComparator.compare(credentials.password, user.password)
+    const passwordMatch = await this.hashComparator.compare(credentials.password, user.password)
+    if (!passwordMatch) {
+      return null
+    }
   }
 }
