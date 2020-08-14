@@ -41,6 +41,12 @@ describe('User Mongo Repository', () => {
     expect(user.password).toBe('any_password')
   })
 
+  test('Should return null if loadByEmail fails', async () => {
+    const sut = makeSut()
+    const user = await sut.loadByEmail('any_email@mail.com')
+    expect(user).toBeFalsy()
+  })
+
   test('Should return a user on add success', async () => {
     const sut = makeSut()
 
