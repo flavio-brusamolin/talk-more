@@ -1,7 +1,7 @@
 import { DbAuthenticateUser } from './db-authenticate-user'
 import { AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
 import { User } from '../../../domain/models/user'
-import { LoadUserByEmailRepository } from '../../protocols'
+import { LoadUserByEmailRepository, HashComparator } from '../../protocols'
 
 const makeFakeCredentials = (): AuthenticateUserModel => ({
   email: 'valid_email@mail.com',
@@ -25,17 +25,30 @@ const makeLoadUserByEmailRepository = (): LoadUserByEmailRepository => {
   return new LoadUserByEmailRepositoryStub()
 }
 
+const makeHashComparator = (): HashComparator => {
+  class HashComparatorStub implements HashComparator {
+    public async compare (_value: string, _hash: string): Promise<boolean> {
+      return true
+    }
+  }
+
+  return new HashComparatorStub()
+}
+
 interface SutTypes {
   loadUserByEmailRepositoryStub: LoadUserByEmailRepository
+  hashComparatorStub: HashComparator
   sut: DbAuthenticateUser
 }
 
 const makeSut = (): SutTypes => {
   const loadUserByEmailRepositoryStub = makeLoadUserByEmailRepository()
-  const sut = new DbAuthenticateUser(loadUserByEmailRepositoryStub)
+  const hashComparatorStub = makeHashComparator()
+  const sut = new DbAuthenticateUser(loadUserByEmailRepositoryStub, hashComparatorStub)
 
   return {
     loadUserByEmailRepositoryStub,
+    hashComparatorStub,
     sut
   }
 }
@@ -71,5 +84,15 @@ describe('DbAuthenticateUser Use Case', () => {
     const accessToken = await sut.authenticate(credentials)
 
     expect(accessToken).toBeNull()
+  })
+
+  test('Should call HashComparator with correct values', async () => {
+    const { sut, hashComparatorStub } = makeSut()
+    const compareSpy = jest.spyOn(hashComparatorStub, 'compare')
+
+    const credentials = makeFakeCredentials()
+    await sut.authenticate(credentials)
+
+    expect(compareSpy).toHaveBeenCalledWith(credentials.password, 'hashed_password')
   })
 })
