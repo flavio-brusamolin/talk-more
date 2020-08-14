@@ -19,6 +19,7 @@ export class DbAuthenticateUser implements AuthenticateUser {
       return null
     }
 
-    await this.encrypter.encrypt(user.id)
+    const accessToken = await this.encrypter.encrypt(user.id)
+    return accessToken
   }
 }
