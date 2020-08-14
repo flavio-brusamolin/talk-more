@@ -101,4 +101,13 @@ describe('DbAddUser Use Case', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a user on success', async () => {
+    const { sut } = makeSut()
+
+    const userData = makeFakeUserData()
+    const user = await sut.add(userData)
+
+    expect(user).toEqual(makeFakeUser())
+  })
 })
