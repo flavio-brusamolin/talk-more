@@ -3,8 +3,6 @@ import validator from 'validator'
 
 export class EmailValidatorAdapter implements EmailValidator {
   public isValid (email: string): boolean {
-    validator.isEmail(email)
-
-    return false
+    return validator.isEmail(email)
   }
 }
