@@ -5,7 +5,11 @@ export class ValidationComposite implements Validator {
 
   public validate (input: any): Error {
     for (const validator of this.validators) {
-      return validator.validate(input)
+      const error = validator.validate(input)
+
+      if (error) {
+        return error
+      }
     }
   }
 }
