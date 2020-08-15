@@ -8,7 +8,7 @@ export class EmailValidation implements Validator {
     private readonly emailValidator: EmailValidator
   ) {}
 
-  public validate (input: any): InvalidParamError {
+  public validate (input: any): Error {
     if (!this.emailValidator.isValid(input[this.field])) {
       return new InvalidParamError(this.field)
     }
