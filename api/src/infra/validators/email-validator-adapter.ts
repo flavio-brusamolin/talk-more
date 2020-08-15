@@ -5,6 +5,6 @@ export class EmailValidatorAdapter implements EmailValidator {
   public isValid (email: string): boolean {
     validator.isEmail(email)
 
-    return null
+    return false
   }
 }
