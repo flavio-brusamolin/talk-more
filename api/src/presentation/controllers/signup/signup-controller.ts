@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse, Validator } from '../../protocols'
+import { Controller, HttpRequest, HttpResponse, Validator } from '../../protocols'
 import { badRequest, serverError, conflict, ok } from '../../helpers/http-helper'
 import { AddUser } from '../../../domain/use-cases/add-user'
 import { DuplicateEmailError } from '../../errors'
@@ -10,7 +10,7 @@ export interface SignUpModel {
   password: string
 }
 
-export class SignUpController {
+export class SignUpController implements Controller {
   public constructor (
     private readonly validator: Validator,
     private readonly addUser: AddUser,
