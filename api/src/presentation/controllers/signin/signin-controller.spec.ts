@@ -1,7 +1,7 @@
 import { SignInController, SignInModel } from './signin-controller'
 import { Validator, HttpRequest } from '../../protocols'
 import { MissingParamError } from '../../errors'
-import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
+import { badRequest, serverError, unauthorized, ok } from '../../helpers/http-helper'
 import { AuthenticateUser, AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
 
 const makeFakeRequest = (): HttpRequest<SignInModel> => ({
@@ -103,5 +103,16 @@ describe('SignIn Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should return an ok response on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(ok({
+      accessToken: 'any_token'
+    }))
   })
 })
