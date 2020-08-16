@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~ngx-toastr/toastr';
+
 :root {
   font-size: 60%;
 
@@ -12,6 +14,7 @@
   --color-dark-primary: #20af93;
   --color-input-background: #333333;
   --color-dark-white: #b3b3b3;
+  --color-error: #ed5565;
 }
 
 * {
@@ -52,4 +55,27 @@ textarea {
   :root {
     font-size: 62.5%;
   }
+}
+
+/* Toastr custom style */
+#toast-container > div {
+  box-shadow: none;
+  font-size: 1.3rem;
+}
+
+.toast-success {
+  background-color: var(--color-dark-primary);
+}
+
+.toast-error {
+  background-color: var(--color-error);
+}
+
+.toast-title {
+  margin-top: 0.1rem;
+}
+
+.toast-message {
+  margin-top: 0.1rem;
+  margin-bottom: 0.2rem;
 }

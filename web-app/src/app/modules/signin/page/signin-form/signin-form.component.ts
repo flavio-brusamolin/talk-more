@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
+import { HttpErrorResponse } from '@angular/common/http'
+
+import { ToastrService } from 'ngx-toastr'
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
+
+import { AuthService } from 'src/app/core/services/auth.service'
+import { SignInData } from 'src/app/data/models'
 
 @Component({
   selector: 'app-signin-form',
@@ -9,7 +18,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 export class SigninFormComponent implements OnInit {
   form: FormGroup
 
-  constructor (private formBuilder: FormBuilder) { }
+  private unsub$ = new Subject<void>()
+
+  constructor (
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private toastr: ToastrService,
+    private router: Router
+  ) { }
 
   ngOnInit (): void {
     this.initializeForms()
@@ -22,7 +38,18 @@ export class SigninFormComponent implements OnInit {
     })
   }
 
-  signin (): void {
-    console.log(this.form.value)
+  signIn (credentials: SignInData): void {
+    this.authService.signIn(credentials)
+      .pipe(takeUntil(this.unsub$))
+      .subscribe(
+        () => {
+          this.toastr.success('Login realizado com sucesso', 'Bem-vindo!')
+          this.router.navigate(['/'])
+        },
+        ({ error }: HttpErrorResponse) => {
+          console.error(error)
+          this.toastr.error(error.error, 'Erro!')
+        }
+      )
   }
 }
