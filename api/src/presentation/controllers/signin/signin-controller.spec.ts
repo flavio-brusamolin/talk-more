@@ -2,6 +2,7 @@ import { SignInController, SignInModel } from './signin-controller'
 import { Validator, HttpRequest } from '../../protocols'
 import { MissingParamError } from '../../errors'
 import { badRequest } from '../../helpers/http-helper'
+import { AuthenticateUser, AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
 
 const makeFakeRequest = (): HttpRequest<SignInModel> => ({
   body: {
@@ -20,17 +21,30 @@ const makeValidator = (): Validator => {
   return new ValidatorStub()
 }
 
+const makeAuthenticateUser = (): AuthenticateUser => {
+  class AuthenticateUserStub implements AuthenticateUser {
+    public async authenticate (_credentials: AuthenticateUserModel): Promise<string> {
+      return 'any_token'
+    }
+  }
+
+  return new AuthenticateUserStub()
+}
+
 interface SutTypes {
   validatorStub: Validator
+  authenticateUserStub: AuthenticateUser
   sut: SignInController
 }
 
 const makeSut = (): SutTypes => {
   const validatorStub = makeValidator()
-  const sut = new SignInController(validatorStub)
+  const authenticateUserStub = makeAuthenticateUser()
+  const sut = new SignInController(validatorStub, authenticateUserStub)
 
   return {
     validatorStub,
+    authenticateUserStub,
     sut
   }
 }
@@ -54,5 +68,18 @@ describe('SignIn Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+  })
+
+  test('Should call AuthenticateUser with correct values', async () => {
+    const { sut, authenticateUserStub } = makeSut()
+    const authenticateSpy = jest.spyOn(authenticateUserStub, 'authenticate')
+
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+
+    expect(authenticateSpy).toHaveBeenCalledWith({
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
   })
 })
