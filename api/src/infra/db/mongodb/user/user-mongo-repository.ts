@@ -6,9 +6,7 @@ import { MongoHelper } from '../helpers/mongo-helper'
 export class UserMongoRepository implements AddUserRepository, LoadUserByEmailRepository, LoadUserByIdRepository {
   public async loadByEmail (email: string): Promise<User> {
     const userCollection = await MongoHelper.getCollection('users')
-
     const userRecord = await userCollection.findOne({ email })
-
     return userRecord && MongoHelper.map(userRecord)
   }
 
@@ -23,9 +21,7 @@ export class UserMongoRepository implements AddUserRepository, LoadUserByEmailRe
 
   public async loadById (id: string): Promise<User> {
     const userCollection = await MongoHelper.getCollection('users')
-
     const userRecord = await userCollection.findOne({ _id: id })
-
     return userRecord && MongoHelper.map(userRecord)
   }
 }
