@@ -1,7 +1,7 @@
 import { SignInController, SignInModel } from './signin-controller'
 import { Validator, HttpRequest } from '../../protocols'
 import { MissingParamError } from '../../errors'
-import { badRequest } from '../../helpers/http-helper'
+import { badRequest, serverError } from '../../helpers/http-helper'
 import { AuthenticateUser, AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
 
 const makeFakeRequest = (): HttpRequest<SignInModel> => ({
@@ -81,5 +81,17 @@ describe('SignIn Controller', () => {
       email: 'any_email@mail.com',
       password: 'any_password'
     })
+  })
+
+  test('Should return an internal server error if AuthenticateUser throws', async () => {
+    const { sut, authenticateUserStub } = makeSut()
+    jest.spyOn(authenticateUserStub, 'authenticate').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(serverError())
   })
 })
