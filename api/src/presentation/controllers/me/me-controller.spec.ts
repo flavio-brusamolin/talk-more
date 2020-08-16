@@ -2,7 +2,8 @@ import { MeController } from './me-controller'
 import { User } from '../../../domain/models/user'
 import { LoadUserById } from '../../../domain/use-cases/load-user-by-id'
 import { HttpRequest } from '../../protocols'
-import { serverError, ok } from '../../helpers/http-helper'
+import { serverError, ok, forbidden } from '../../helpers/http-helper'
+import { InvalidParamError } from '../../errors'
 
 const makeFakeRequest = (): HttpRequest<any> => ({
   userId: 'any_id'
@@ -61,6 +62,16 @@ describe('Me Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return an forbidden error if LoadUserById returns null', async () => {
+    const { sut, loadUserByIdStub } = makeSut()
+    jest.spyOn(loadUserByIdStub, 'loadById').mockReturnValueOnce(null)
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('userId')))
   })
 
   test('Should return an ok response on success', async () => {
