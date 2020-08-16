@@ -63,4 +63,12 @@ describe('DbLoadUserById Use Case', () => {
 
     expect(user).toBeNull()
   })
+
+  test('Should return a user on success', async () => {
+    const { sut } = makeSut()
+
+    const user = await sut.loadById('any_id')
+
+    expect(user).toEqual(makeFakeUser())
+  })
 })
