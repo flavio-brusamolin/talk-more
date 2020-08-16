@@ -6,8 +6,6 @@ export class DbLoadUserById implements LoadUserById {
   public constructor (private readonly loadUserByIdRepository: LoadUserByIdRepository) {}
 
   public async loadById (id: string): Promise<User> {
-    await this.loadUserByIdRepository.loadById(id)
-
-    return null
+    return await this.loadUserByIdRepository.loadById(id)
   }
 }
