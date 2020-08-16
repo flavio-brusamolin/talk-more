@@ -2,7 +2,7 @@ import { MeController } from './me-controller'
 import { User } from '../../../domain/models/user'
 import { LoadUserById } from '../../../domain/use-cases/load-user-by-id'
 import { HttpRequest } from '../../protocols'
-import { serverError } from '../../helpers/http-helper'
+import { serverError, ok } from '../../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest<any> => ({
   userId: 'any_id'
@@ -61,5 +61,14 @@ describe('Me Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return an ok response on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(ok(makeFakeUser()))
   })
 })
