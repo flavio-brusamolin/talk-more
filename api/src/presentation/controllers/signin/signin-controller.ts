@@ -1,4 +1,5 @@
 import { Controller, HttpResponse, HttpRequest, Validator } from '../../protocols'
+import { badRequest } from '../../helpers/http-helper'
 
 export interface SignInModel {
   email: string
@@ -9,8 +10,8 @@ export class SignInController implements Controller {
   public constructor (private readonly validator: Validator) {}
 
   public async handle (httpRequest: HttpRequest<SignInModel>): Promise<HttpResponse> {
-    this.validator.validate(httpRequest.body)
+    const error = this.validator.validate(httpRequest.body)
 
-    return null
+    return badRequest(error)
   }
 }
