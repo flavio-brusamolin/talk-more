@@ -2,6 +2,7 @@ import { MeController } from './me-controller'
 import { User } from '../../../domain/models/user'
 import { LoadUserById } from '../../../domain/use-cases/load-user-by-id'
 import { HttpRequest } from '../../protocols'
+import { serverError } from '../../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest<any> => ({
   userId: 'any_id'
@@ -48,5 +49,17 @@ describe('Me Controller', () => {
     await sut.handle(httpRequest)
 
     expect(loadByIdSpy).toHaveBeenCalledWith(httpRequest.userId)
+  })
+
+  test('Should return an internal server error if LoadUserById throws', async () => {
+    const { sut, loadUserByIdStub } = makeSut()
+    jest.spyOn(loadUserByIdStub, 'loadById').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(serverError())
   })
 })
