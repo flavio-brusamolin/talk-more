@@ -54,4 +54,13 @@ describe('DbLoadUserById Use Case', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if LoadUserByIdRepository returns null', async () => {
+    const { sut, loadUserByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadUserByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
+
+    const user = await sut.loadById('any_id')
+
+    expect(user).toBeNull()
+  })
 })
