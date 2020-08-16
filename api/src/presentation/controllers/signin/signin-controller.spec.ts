@@ -1,7 +1,7 @@
 import { SignInController, SignInModel } from './signin-controller'
 import { Validator, HttpRequest } from '../../protocols'
 import { MissingParamError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
 import { AuthenticateUser, AuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
 
 const makeFakeRequest = (): HttpRequest<SignInModel> => ({
@@ -93,5 +93,15 @@ describe('SignIn Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return an unauthorized error if AuthenticateUser returns null', async () => {
+    const { sut, authenticateUserStub } = makeSut()
+    jest.spyOn(authenticateUserStub, 'authenticate').mockReturnValueOnce(null)
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
