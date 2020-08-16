@@ -26,6 +26,6 @@ export class UserMongoRepository implements AddUserRepository, LoadUserByEmailRe
 
     const userRecord = await userCollection.findOne({ _id: id })
 
-    return MongoHelper.map(userRecord)
+    return userRecord && MongoHelper.map(userRecord)
   }
 }
