@@ -83,4 +83,10 @@ describe('User Mongo Repository', () => {
     expect(user.email).toBe('any_email@mail.com')
     expect(user.password).toBe('any_password')
   })
+
+  test('Should return null if loadById fails', async () => {
+    const sut = makeSut()
+    const user = await sut.loadById('any_id')
+    expect(user).toBeFalsy()
+  })
 })
