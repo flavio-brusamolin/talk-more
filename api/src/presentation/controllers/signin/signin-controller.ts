@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, HttpRequest, Validator } from '../../protocols'
-import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
+import { badRequest, serverError, unauthorized, ok } from '../../helpers/http-helper'
 import { AuthenticateUser } from '../../../domain/use-cases/authenticate-user'
 
 export interface SignInModel {
@@ -22,12 +22,15 @@ export class SignInController implements Controller {
 
       const { email, password } = httpRequest.body
 
-      await this.authenticateUser.authenticate({
+      const accessToken = await this.authenticateUser.authenticate({
         email,
         password
       })
+      if (!accessToken) {
+        return unauthorized()
+      }
 
-      return unauthorized()
+      return ok({ accessToken })
     } catch (error) {
       console.error(error)
       return serverError()
