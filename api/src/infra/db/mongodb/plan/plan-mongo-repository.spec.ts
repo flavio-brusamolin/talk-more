@@ -54,4 +54,10 @@ describe('Plan Mongo Repository', () => {
     expect(plans[1].minutes).toBe(plansData[1].minutes)
     expect(plans[1].price).toBe(plansData[1].price)
   })
+
+  test('Should return an empty list', async () => {
+    const sut = makeSut()
+    const plans = await sut.loadAll()
+    expect(plans.length).toBe(0)
+  })
 })
