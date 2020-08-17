@@ -1,6 +1,7 @@
 import { LoadPlansController } from './load-plans-controller'
 import { Plan } from '../../../domain/models/plan'
 import { LoadPlans } from '../../../domain/use-cases/load-plans'
+import { serverError } from '../../helpers/http-helper'
 
 const makeFakePlans = (): Plan[] => ([
   {
@@ -50,5 +51,16 @@ describe('LoadPlans Controller', () => {
     await sut.handle({})
 
     expect(loadSpy).toHaveBeenCalledTimes(1)
+  })
+
+  test('Should return an internal server error if LoadPlans throws', async () => {
+    const { sut, loadPlansStub } = makeSut()
+    jest.spyOn(loadPlansStub, 'load').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpResponse = await sut.handle({})
+
+    expect(httpResponse).toEqual(serverError())
   })
 })
