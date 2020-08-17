@@ -1,7 +1,7 @@
 import { Middleware } from '../protocols/middleware'
 import { HttpRequest, HttpResponse } from '../protocols'
 import { CheckUserAuthentication } from '../../domain/use-cases/check-user-authentication'
-import { serverError } from '../helpers/http-helper'
+import { serverError, unauthorized } from '../helpers/http-helper'
 
 export class AuthMiddleware implements Middleware {
   public constructor (private readonly checkUserAuthentication: CheckUserAuthentication) {}
@@ -11,7 +11,7 @@ export class AuthMiddleware implements Middleware {
       const accessToken = httpRequest.headers?.authorization
       await this.checkUserAuthentication.checkAuthentication(accessToken)
 
-      return null
+      return unauthorized()
     } catch (error) {
       console.error(error)
       return serverError()
