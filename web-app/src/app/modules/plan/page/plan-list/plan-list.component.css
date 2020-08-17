@@ -37,6 +37,11 @@
   margin-top: 3rem;
 }
 
+#plan-list main .plans span {
+  width: 100%;
+  text-align: center;
+}
+
 @media (min-width: 580px) {
   #plan-list main .title-container h1 {
     max-width: 100%;

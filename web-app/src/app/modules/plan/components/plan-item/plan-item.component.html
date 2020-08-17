@@ -1,14 +1,14 @@
 <article class="plan-item">
   <header>
-    <span>FaleMais 30</span>
+    <span>{{ plan.name }}</span>
   </header>
 
   <main>
-    <span>30 min / grátis</span>
+    <span>{{ plan.minutes }} min / grátis</span>
 
     <div class="price">
       <label>$</label>
-      <strong>10</strong>
+      <strong>{{ plan.price }}</strong>
       <span>/ mês</span>
     </div>
   </main>

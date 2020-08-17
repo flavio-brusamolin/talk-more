@@ -6,14 +6,19 @@
     </div>
 
     <div class="plans">
-      <app-plan-item></app-plan-item>
-      <app-plan-item></app-plan-item>
-      <app-plan-item></app-plan-item>
-      <app-plan-item></app-plan-item>
-      <app-plan-item></app-plan-item>
-      <app-plan-item></app-plan-item>
-      <app-plan-item></app-plan-item>
-      <app-plan-item></app-plan-item>
+      <ng-container *ngIf="(plans$ | async) as plans; else loading">
+        <ng-container *ngIf="plans.length; else empty">
+          <app-plan-item *ngFor="let plan of plans" [plan]="plan"></app-plan-item>
+        </ng-container>
+
+        <ng-template #empty>
+          <span>Nenhum plano encontrado :(</span>
+        </ng-template>
+      </ng-container>
+
+      <ng-template #loading>
+        <span>Carregando...</span>
+      </ng-template>
     </div>
   </main>
 </div>
