@@ -1,7 +1,7 @@
 import { LoadPlansController } from './load-plans-controller'
 import { Plan } from '../../../domain/models/plan'
 import { LoadPlans } from '../../../domain/use-cases/load-plans'
-import { serverError } from '../../helpers/http-helper'
+import { serverError, ok } from '../../helpers/http-helper'
 
 const makeFakePlans = (): Plan[] => ([
   {
@@ -62,5 +62,13 @@ describe('LoadPlans Controller', () => {
     const httpResponse = await sut.handle({})
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return an ok response on success', async () => {
+    const { sut } = makeSut()
+
+    const httpResponse = await sut.handle({})
+
+    expect(httpResponse).toEqual(ok(makeFakePlans()))
   })
 })
