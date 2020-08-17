@@ -1,7 +1,7 @@
 import { AuthMiddleware } from './auth-middleware'
 import { HttpRequest } from '../protocols'
 import { CheckUserAuthentication } from '../../domain/use-cases/check-user-authentication'
-import { serverError } from '../helpers/http-helper'
+import { serverError, unauthorized } from '../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest<any> => ({
   headers: {
@@ -55,5 +55,15 @@ describe('Auth Middleware', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return an unauthorized error if CheckUserAuthentication returns null', async () => {
+    const { sut, checkUserAuthenticationStub } = makeSut()
+    jest.spyOn(checkUserAuthenticationStub, 'checkAuthentication').mockReturnValueOnce(null)
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
