@@ -9,6 +9,9 @@ export class AuthMiddleware implements Middleware {
   public async handle (httpRequest: HttpRequest<any>): Promise<HttpResponse> {
     try {
       const accessToken = httpRequest.headers?.authorization
+      if (!accessToken) {
+        return unauthorized()
+      }
 
       const userId = await this.checkUserAuthentication.checkAuthentication(accessToken)
       if (!userId) {
