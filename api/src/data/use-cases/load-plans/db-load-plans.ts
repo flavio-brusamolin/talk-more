@@ -6,8 +6,6 @@ export class DbLoadPlans implements LoadPlans {
   public constructor (private readonly loadPlansRepository: LoadPlansRepository) {}
 
   public async load (): Promise<Plan[]> {
-    await this.loadPlansRepository.loadAll()
-
-    return null
+    return await this.loadPlansRepository.loadAll()
   }
 }
