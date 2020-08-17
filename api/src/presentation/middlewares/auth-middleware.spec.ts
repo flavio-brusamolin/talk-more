@@ -35,6 +35,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Auth Middleware', () => {
+  test('Should return an unauthorized error if no authorization token exists in headers', async () => {
+    const { sut } = makeSut()
+
+    const httpResponse = await sut.handle({})
+
+    expect(httpResponse).toEqual(unauthorized())
+  })
+
   test('Should call CheckUserAuthentication with correct value', async () => {
     const { sut, checkUserAuthenticationStub } = makeSut()
     const checkAuthenticationSpy = jest.spyOn(checkUserAuthenticationStub, 'checkAuthentication')
