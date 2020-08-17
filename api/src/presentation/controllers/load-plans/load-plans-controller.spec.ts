@@ -6,13 +6,13 @@ import { serverError, ok } from '../../helpers/http-helper'
 const makeFakePlans = (): Plan[] => ([
   {
     id: 'any_id',
-    name: 'any_title',
+    name: 'any_name',
     minutes: 30,
     price: 50
   },
   {
     id: 'any_id',
-    name: 'any_title',
+    name: 'any_name',
     minutes: 60,
     price: 90
   }
