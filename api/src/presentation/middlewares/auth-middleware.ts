@@ -8,7 +8,7 @@ export class AuthMiddleware implements Middleware {
 
   public async handle (httpRequest: HttpRequest<any>): Promise<HttpResponse> {
     try {
-      const accessToken = httpRequest.headers?.authorization
+      const accessToken = httpRequest.headers?.['x-access-token']
       if (!accessToken) {
         return unauthorized()
       }

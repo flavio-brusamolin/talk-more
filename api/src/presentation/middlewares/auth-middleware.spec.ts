@@ -5,7 +5,7 @@ import { serverError, unauthorized, ok } from '../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest<any> => ({
   headers: {
-    authorization: 'any_token'
+    'x-access-token': 'any_token'
   }
 })
 
@@ -35,7 +35,7 @@ const makeSut = (): SutTypes => {
 }
 
 describe('Auth Middleware', () => {
-  test('Should return an unauthorized error if no authorization token exists in headers', async () => {
+  test('Should return an unauthorized error if no x-access-token exists in headers', async () => {
     const { sut } = makeSut()
 
     const httpResponse = await sut.handle({})
@@ -50,7 +50,7 @@ describe('Auth Middleware', () => {
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
 
-    expect(checkAuthenticationSpy).toHaveBeenCalledWith(httpRequest.headers.authorization)
+    expect(checkAuthenticationSpy).toHaveBeenCalledWith(httpRequest.headers?.['x-access-token'])
   })
 
   test('Should return an internal server error if CheckUserAuthentication throws', async () => {
