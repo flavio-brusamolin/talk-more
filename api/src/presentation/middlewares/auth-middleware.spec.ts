@@ -1,7 +1,7 @@
 import { AuthMiddleware } from './auth-middleware'
 import { HttpRequest } from '../protocols'
 import { CheckUserAuthentication } from '../../domain/use-cases/check-user-authentication'
-import { serverError, unauthorized } from '../helpers/http-helper'
+import { serverError, unauthorized, ok } from '../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest<any> => ({
   headers: {
@@ -65,5 +65,16 @@ describe('Auth Middleware', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should return an ok response on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(ok({
+      userId: 'any_id'
+    }))
   })
 })
