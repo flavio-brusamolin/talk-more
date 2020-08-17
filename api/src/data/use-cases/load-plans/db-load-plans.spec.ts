@@ -51,4 +51,15 @@ describe('DbLoadPlans Use Case', () => {
 
     expect(loadAllSpy).toHaveBeenCalledTimes(1)
   })
+
+  test('Should throw if LoadPlansRepository throws', async () => {
+    const { sut, loadPlansRepositoryStub } = makeSut()
+    jest.spyOn(loadPlansRepositoryStub, 'loadAll').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const promise = sut.load()
+
+    await expect(promise).rejects.toThrow()
+  })
 })
