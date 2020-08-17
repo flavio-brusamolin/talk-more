@@ -62,4 +62,12 @@ describe('DbLoadPlans Use Case', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a list of plans on success', async () => {
+    const { sut } = makeSut()
+
+    const plans = await sut.load()
+
+    expect(plans).toEqual(makeFakePlans())
+  })
 })
