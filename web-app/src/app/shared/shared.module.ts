@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { ReactiveFormsModule } from '@angular/forms'
 
-import { AuthContainerComponent } from './auth-container/auth-container.component'
+import { LoginContainerComponent } from './login-container/login-container.component'
 import { InputComponent } from './input/input.component'
 
 @NgModule({
   declarations: [
-    AuthContainerComponent,
+    LoginContainerComponent,
     InputComponent
   ],
   imports: [
@@ -19,7 +19,7 @@ import { InputComponent } from './input/input.component'
     CommonModule,
     ReactiveFormsModule,
 
-    AuthContainerComponent,
+    LoginContainerComponent,
     InputComponent
   ]
 })
