@@ -33,5 +33,9 @@ export const MongoHelper = {
       ...rest,
       id: _id
     }
+  },
+
+  mapArray (records: any[]): any[] {
+    return records.map(record => MongoHelper.map(record))
   }
 }
