@@ -1,7 +1,8 @@
 import { DbSubscribePlan } from './db-subscribe-plan'
 import { SubscribePlanModel } from '../../../domain/use-cases/subscribe-plan'
 import { Plan } from '../../../domain/models/plan'
-import { LoadPlanByIdRepository } from '../../protocols'
+import { LoadPlanByIdRepository, UpdateUserPlanRepository } from '../../protocols'
+import { User } from '../../../domain/models/user'
 
 const makeFakeSubscriptionData = (): SubscribePlanModel => ({
   userId: 'any_user_id',
@@ -15,6 +16,14 @@ const makeFakePlan = (): Plan => ({
   price: 50
 })
 
+const makeFakeUser = (): User => ({
+  id: 'any_user_id',
+  name: 'any_name',
+  email: 'any_email@mail.com',
+  password: 'any_password',
+  planId: 'any_plan_id'
+})
+
 const makeLoadPlanByIdRepository = (): LoadPlanByIdRepository => {
   class LoadPlanByIdRepositoryStub implements LoadPlanByIdRepository {
     public async loadById (_id: string): Promise<Plan> {
@@ -25,17 +34,30 @@ const makeLoadPlanByIdRepository = (): LoadPlanByIdRepository => {
   return new LoadPlanByIdRepositoryStub()
 }
 
+const makeUpdateUserPlanRepository = (): UpdateUserPlanRepository => {
+  class UpdateUserPlanRepositoryStub implements UpdateUserPlanRepository {
+    public async updatePlan (_subscriptionData: SubscribePlanModel): Promise<User> {
+      return makeFakeUser()
+    }
+  }
+
+  return new UpdateUserPlanRepositoryStub()
+}
+
 interface SutTypes {
   loadPlanByIdRepositoryStub: LoadPlanByIdRepository
+  updateUserPlanRepositoryStub: UpdateUserPlanRepository
   sut: DbSubscribePlan
 }
 
 const makeSut = (): SutTypes => {
   const loadPlanByIdRepositoryStub = makeLoadPlanByIdRepository()
-  const sut = new DbSubscribePlan(loadPlanByIdRepositoryStub)
+  const updateUserPlanRepositoryStub = makeUpdateUserPlanRepository()
+  const sut = new DbSubscribePlan(loadPlanByIdRepositoryStub, updateUserPlanRepositoryStub)
 
   return {
     loadPlanByIdRepositoryStub,
+    updateUserPlanRepositoryStub,
     sut
   }
 }
@@ -71,5 +93,15 @@ describe('DbSubscribePlan Use Case', () => {
     const user = await sut.subscribe(subscriptionData)
 
     expect(user).toBeNull()
+  })
+
+  test('Should call UpdateUserPlanRepository with correct values', async () => {
+    const { sut, updateUserPlanRepositoryStub } = makeSut()
+    const updatePlanSpy = jest.spyOn(updateUserPlanRepositoryStub, 'updatePlan')
+
+    const subscriptionData = makeFakeSubscriptionData()
+    await sut.subscribe(subscriptionData)
+
+    expect(updatePlanSpy).toHaveBeenCalledWith(subscriptionData)
   })
 })
