@@ -31,8 +31,8 @@ export class UserMongoRepository implements AddUserRepository, LoadUserByEmailRe
     const userCollection = await MongoHelper.getCollection('users')
 
     const userRecord = await userCollection.findOneAndUpdate(
-      { _id: userId },
-      { $set: { planId: planId } },
+      { _id: new ObjectId(userId) },
+      { $set: { planId } },
       { returnOriginal: false }
     )
 
