@@ -104,4 +104,16 @@ describe('DbSubscribePlan Use Case', () => {
 
     expect(updatePlanSpy).toHaveBeenCalledWith(subscriptionData)
   })
+
+  test('Should throw if UpdateUserPlanRepository throws', async () => {
+    const { sut, updateUserPlanRepositoryStub } = makeSut()
+    jest.spyOn(updateUserPlanRepositoryStub, 'updatePlan').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const subscriptionData = makeFakeSubscriptionData()
+    const promise = sut.subscribe(subscriptionData)
+
+    await expect(promise).rejects.toThrow()
+  })
 })
