@@ -9,10 +9,11 @@ export class DbSubscribePlan implements SubscribePlan {
   ) {}
 
   public async subscribe (subscriptionData: SubscribePlanModel): Promise<User> {
-    await this.loadPlanByIdRepository.loadById(subscriptionData.planId)
+    const plan = await this.loadPlanByIdRepository.loadById(subscriptionData.planId)
+    if (!plan) {
+      return null
+    }
 
-    await this.updateUserPlanRepository.updatePlan(subscriptionData)
-
-    return null
+    return await this.updateUserPlanRepository.updatePlan(subscriptionData)
   }
 }
