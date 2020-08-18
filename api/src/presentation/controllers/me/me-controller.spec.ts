@@ -2,8 +2,7 @@ import { MeController } from './me-controller'
 import { User } from '../../../domain/models/user'
 import { LoadUserById } from '../../../domain/use-cases/load-user-by-id'
 import { HttpRequest } from '../../protocols'
-import { serverError, ok, forbidden } from '../../helpers/http-helper'
-import { InvalidParamError } from '../../errors'
+import { serverError, ok, unauthorized } from '../../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest<any> => ({
   userId: 'any_id'
@@ -64,14 +63,14 @@ describe('Me Controller', () => {
     expect(httpResponse).toEqual(serverError())
   })
 
-  test('Should return an forbidden error if LoadUserById returns null', async () => {
+  test('Should return an unauthorized error if LoadUserById returns null', async () => {
     const { sut, loadUserByIdStub } = makeSut()
     jest.spyOn(loadUserByIdStub, 'loadById').mockReturnValueOnce(null)
 
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
 
-    expect(httpResponse).toEqual(forbidden(new InvalidParamError('userId')))
+    expect(httpResponse).toEqual(unauthorized())
   })
 
   test('Should return an ok response on success', async () => {

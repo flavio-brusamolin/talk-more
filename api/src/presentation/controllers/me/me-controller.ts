@@ -1,7 +1,6 @@
 import { Controller, HttpResponse, HttpRequest } from '../../protocols'
 import { LoadUserById } from '../../../domain/use-cases/load-user-by-id'
-import { serverError, ok, forbidden } from '../../helpers/http-helper'
-import { InvalidParamError } from '../../errors'
+import { serverError, ok, unauthorized } from '../../helpers/http-helper'
 
 export class MeController implements Controller {
   public constructor (private readonly loadUserById: LoadUserById) {}
@@ -12,7 +11,7 @@ export class MeController implements Controller {
 
       const user = await this.loadUserById.loadById(userId)
       if (!user) {
-        return forbidden(new InvalidParamError('userId'))
+        return unauthorized()
       }
 
       return ok(user)
