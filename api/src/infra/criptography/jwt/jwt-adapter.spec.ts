@@ -69,4 +69,12 @@ describe('Jwt Adapter', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return an id on jwt verify success', async () => {
+    const sut = makeSut()
+
+    const id = await sut.decrypt('any_token')
+
+    expect(id).toBe('any_id')
+  })
 })
