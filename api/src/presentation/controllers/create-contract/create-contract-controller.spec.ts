@@ -2,11 +2,13 @@ import { CreateContractController, CreateContractModel } from './create-contract
 import { HttpRequest, Validator } from '../../protocols'
 import { MissingParamError } from '../../errors'
 import { badRequest } from '../../helpers/http-helper'
+import { SubscribePlan, SubscribePlanModel } from '../../../domain/use-cases/subscribe-plan'
 
 const makeFakeRequest = (): HttpRequest<CreateContractModel> => ({
   body: {
-    planId: 'any_id'
-  }
+    planId: 'any_plan_id'
+  },
+  userId: 'any_user_id'
 })
 
 const makeValidator = (): Validator => {
@@ -19,17 +21,28 @@ const makeValidator = (): Validator => {
   return new ValidatorStub()
 }
 
+const makeSubscribePlan = (): SubscribePlan => {
+  class SubscribePlanStub implements SubscribePlan {
+    public async subscribe (_subscriptionData: SubscribePlanModel): Promise<void> {}
+  }
+
+  return new SubscribePlanStub()
+}
+
 interface SutTypes {
   validatorStub: Validator
+  subscribePlanStub: SubscribePlan
   sut: CreateContractController
 }
 
 const makeSut = (): SutTypes => {
   const validatorStub = makeValidator()
-  const sut = new CreateContractController(validatorStub)
+  const subscribePlanStub = makeSubscribePlan()
+  const sut = new CreateContractController(validatorStub, subscribePlanStub)
 
   return {
     validatorStub,
+    subscribePlanStub,
     sut
   }
 }
@@ -53,5 +66,18 @@ describe('CreateContract Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+  })
+
+  test('Should call SubscribePlan with correct values', async () => {
+    const { sut, subscribePlanStub } = makeSut()
+    const subscribeSpy = jest.spyOn(subscribePlanStub, 'subscribe')
+
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+
+    expect(subscribeSpy).toHaveBeenCalledWith({
+      userId: 'any_user_id',
+      planId: 'any_plan_id'
+    })
   })
 })
