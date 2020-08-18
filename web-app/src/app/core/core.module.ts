@@ -7,6 +7,7 @@ import { ToastrModule } from 'ngx-toastr'
 import { throwIfAlreadyLoaded } from './guards/module-import.guard'
 import { AuthService } from './services/auth.service'
 import { TokenInterceptor } from './interceptors/token.interceptor'
+import { HttpErorInterceptor } from './interceptors/http-eror.interceptor'
 
 @NgModule({
   declarations: [],
@@ -27,6 +28,11 @@ import { TokenInterceptor } from './interceptors/token.interceptor'
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErorInterceptor,
       multi: true
     }
   ]
