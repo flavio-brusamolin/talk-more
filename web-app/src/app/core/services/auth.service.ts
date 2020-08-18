@@ -25,6 +25,10 @@ export class AuthService {
       .pipe(tap(({ accessToken }) => this.setToken(accessToken)))
   }
 
+  getToken (): string {
+    return localStorage.getItem('accessToken')
+  }
+
   private setToken (accessToken: string): void {
     localStorage.setItem('accessToken', accessToken)
   }
