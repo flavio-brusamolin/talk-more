@@ -1,5 +1,4 @@
-import { Middleware } from '../protocols/middleware'
-import { HttpRequest, HttpResponse } from '../protocols'
+import { Middleware, HttpRequest, HttpResponse } from '../protocols'
 import { CheckUserAuthentication } from '../../domain/use-cases/check-user-authentication'
 import { serverError, unauthorized, ok } from '../helpers/http-helper'
 
