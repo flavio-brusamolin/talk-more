@@ -1,6 +1,6 @@
 import { PlanMongoRepository } from './plan-mongo-repository'
 import { MongoHelper } from '../helpers/mongo-helper'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 const makeSut = (): PlanMongoRepository => {
   return new PlanMongoRepository()
@@ -78,5 +78,11 @@ describe('Plan Mongo Repository', () => {
     expect(plan.name).toBe('any_name')
     expect(plan.minutes).toBe(30)
     expect(plan.price).toBe(50)
+  })
+
+  test('Should return null if loadById fails', async () => {
+    const sut = makeSut()
+    const plan = await sut.loadById(new ObjectId().toHexString())
+    expect(plan).toBeFalsy()
   })
 })
