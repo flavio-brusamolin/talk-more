@@ -89,4 +89,26 @@ describe('User Mongo Repository', () => {
     const user = await sut.loadById(new ObjectId().toHexString())
     expect(user).toBeFalsy()
   })
+
+  test('Should update the user plan on updatePlan success', async () => {
+    const sut = makeSut()
+
+    const result = await userCollection.insertOne({
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+    let [user] = result.ops
+
+    expect(user.planId).toBeFalsy()
+
+    const planId = new ObjectId().toHexString()
+    user = await sut.updatePlan({
+      userId: user._id,
+      planId
+    })
+
+    expect(user).toBeTruthy()
+    expect(user.planId).toBe(planId)
+  })
 })
