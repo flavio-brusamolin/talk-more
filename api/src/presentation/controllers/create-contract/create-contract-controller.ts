@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, HttpRequest, Validator } from '../../protocols'
-import { badRequest } from '../../helpers/http-helper'
+import { badRequest, serverError } from '../../helpers/http-helper'
 import { SubscribePlan } from '../../../domain/use-cases/subscribe-plan'
 
 export interface CreateContractModel {
@@ -13,16 +13,21 @@ export class CreateContractController implements Controller {
   ) {}
 
   public async handle (httpRequest: HttpRequest<CreateContractModel>): Promise<HttpResponse> {
-    const error = this.validator.validate(httpRequest.body)
+    try {
+      const error = this.validator.validate(httpRequest.body)
 
-    const { userId } = httpRequest
-    const { planId } = httpRequest.body
+      const { userId } = httpRequest
+      const { planId } = httpRequest.body
 
-    await this.subscribePlan.subscribe({
-      userId,
-      planId
-    })
+      await this.subscribePlan.subscribe({
+        userId,
+        planId
+      })
 
-    return badRequest(error)
+      return badRequest(error)
+    } catch (error) {
+      console.error(error)
+      return serverError()
+    }
   }
 }
