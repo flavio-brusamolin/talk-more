@@ -23,12 +23,20 @@
   letter-spacing: 0.25rem;
 }
 
-.top-navbar .nav-container .nav-options a {
+.top-navbar .nav-container .nav-options .option-text {
   font-size: 1.4rem;
   letter-spacing: 0.06rem;
   text-decoration: none;
   transition: opacity 0.2s;
   color: var(--color-text-base);
+}
+
+.top-navbar .nav-container .nav-options .option-text label {
+  margin: 0rem 0.8rem;
+}
+
+.top-navbar .nav-container .nav-options a {
+  cursor: pointer;
 }
 
 .top-navbar .nav-container .nav-options a:hover {

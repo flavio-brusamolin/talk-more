@@ -25,6 +25,10 @@ export class AuthService {
       .pipe(tap(({ accessToken }) => this.setToken(accessToken)))
   }
 
+  signOut (): void {
+    localStorage.removeItem('accessToken')
+  }
+
   loadLoggedUser (): Observable<User> {
     return this.http.get<User>(`${this.url}/me`)
   }

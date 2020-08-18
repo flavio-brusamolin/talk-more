@@ -3,8 +3,17 @@
     <span>Telzir</span>
 
     <div class="nav-options">
-      <a [routerLink]="['/signin']">Entrar</a>
-      <a [routerLink]="['/signup']">Registrar-se</a>
+      <ng-container *ngIf="(name$ | async) as name; else options">
+        <p class="option-text">
+          {{ name }}<label>|</label>
+          <a (click)="signOut()">Sair</a>
+        </p>
+      </ng-container>
+
+      <ng-template #options>
+        <a class="option-text" [routerLink]="['/signin']">Entrar</a>
+        <a class="option-text" [routerLink]="['/signup']">Registrar-se</a>
+      </ng-template>
     </div>
   </div>
 </nav>
