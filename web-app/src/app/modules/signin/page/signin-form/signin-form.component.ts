@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, OnDestroy } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -15,7 +15,7 @@ import { SignInData } from 'src/app/data/models'
   templateUrl: './signin-form.component.html',
   styleUrls: ['./signin-form.component.css']
 })
-export class SigninFormComponent implements OnInit {
+export class SigninFormComponent implements OnInit, OnDestroy {
   form: FormGroup
 
   private unsub$ = new Subject<void>()
@@ -31,6 +31,11 @@ export class SigninFormComponent implements OnInit {
     this.initializeForms()
   }
 
+  ngOnDestroy (): void {
+    this.unsub$.next()
+    this.unsub$.complete()
+  }
+
   private initializeForms (): void {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -43,7 +48,7 @@ export class SigninFormComponent implements OnInit {
       .pipe(takeUntil(this.unsub$))
       .subscribe(
         () => {
-          this.toastr.success('Login realizado com sucesso', 'Bem-vindo!')
+          this.toastr.success('Login realizado com sucesso', 'Bem-vindo de volta!')
           this.router.navigate(['/'])
         },
         ({ error }: HttpErrorResponse) => {

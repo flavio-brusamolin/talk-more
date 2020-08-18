@@ -3,7 +3,7 @@
     <span>Telzir</span>
 
     <div class="nav-options">
-      <ng-container *ngIf="(name$ | async) as name; else options">
+      <ng-container *ngIf="(isLoggedIn$ | async) && (name$ | async) as name; else options">
         <p class="option-text">
           {{ name }}<label>|</label>
           <a (click)="signOut()">Sair</a>

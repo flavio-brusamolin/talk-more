@@ -8,7 +8,9 @@
     <div class="plans">
       <ng-container *ngIf="(plans$ | async) as plans; else loading">
         <ng-container *ngIf="plans.length; else empty">
-          <app-plan-item *ngFor="let plan of plans" [plan]="plan"></app-plan-item>
+          <app-plan-item *ngFor="let plan of plans" [plan]="plan" [current]="isLoggedIn && plan.id === currentPlanId"
+            (subscribePlanEvent)="createContract($event)">
+          </app-plan-item>
         </ng-container>
 
         <ng-template #empty>

@@ -1,4 +1,4 @@
-<article class="plan-item">
+<article class="plan-item" [ngClass]="{'highlight': current}">
   <header>
     <span>{{ plan.name }}</span>
   </header>
@@ -14,8 +14,8 @@
   </main>
 
   <footer>
-    <button type="submit">
-      Assinar
+    <button type="button" (click)="subscribePlan(plan.id)" [ngClass]="{'disabled': current}">
+      {{ current ? 'Meu plano' : 'Assinar' }}
     </button>
   </footer>
 </article>

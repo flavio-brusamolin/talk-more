@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, OnDestroy } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { HttpErrorResponse } from '@angular/common/http'
@@ -15,7 +15,7 @@ import { SignUpData } from 'src/app/data/models'
   templateUrl: './signup-form.component.html',
   styleUrls: ['./signup-form.component.css']
 })
-export class SignupFormComponent implements OnInit {
+export class SignupFormComponent implements OnInit, OnDestroy {
   form: FormGroup
 
   private unsub$ = new Subject<void>()
@@ -31,6 +31,11 @@ export class SignupFormComponent implements OnInit {
     this.initializeForms()
   }
 
+  ngOnDestroy (): void {
+    this.unsub$.next()
+    this.unsub$.complete()
+  }
+
   private initializeForms (): void {
     this.form = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -44,7 +49,7 @@ export class SignupFormComponent implements OnInit {
       .pipe(takeUntil(this.unsub$))
       .subscribe(
         () => {
-          this.toastr.success('Cadastro realizado com sucesso', 'Muito bem!')
+          this.toastr.success('Seja bem-vindo ao nosso sistema', 'Olá!')
           this.router.navigate(['/'])
         },
         ({ error }: HttpErrorResponse) => {

@@ -11,15 +11,22 @@ import { AuthService } from 'src/app/core/services/auth.service'
   styleUrls: ['./top-navbar.component.css']
 })
 export class TopNavbarComponent implements OnInit {
+  isLoggedIn$: Observable<boolean>
+
   name$: Observable<string>
 
   constructor (private authService: AuthService) { }
 
   ngOnInit (): void {
-    this.loadLoggedUser()
+    this.getAuthStatus()
+    this.loadUserName()
   }
 
-  private loadLoggedUser (): void {
+  private getAuthStatus (): void {
+    this.isLoggedIn$ = this.authService.isLoggedIn()
+  }
+
+  private loadUserName (): void {
     this.name$ = this.authService
       .loadLoggedUser()
       .pipe(map(user => user.name))
@@ -27,6 +34,5 @@ export class TopNavbarComponent implements OnInit {
 
   signOut (): void {
     this.authService.signOut()
-    this.name$ = null
   }
 }

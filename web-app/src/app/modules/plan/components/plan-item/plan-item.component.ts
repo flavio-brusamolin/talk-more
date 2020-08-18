@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 
 import { Plan } from 'src/app/data/models'
 
@@ -9,9 +9,16 @@ import { Plan } from 'src/app/data/models'
 })
 export class PlanItemComponent implements OnInit {
   @Input() plan: Plan
+  @Input() current: boolean
+
+  @Output() private subscribePlanEvent = new EventEmitter<string>();
 
   constructor () { }
 
   ngOnInit (): void {
+  }
+
+  subscribePlan (planId: string): void {
+    this.subscribePlanEvent.emit(planId)
   }
 }

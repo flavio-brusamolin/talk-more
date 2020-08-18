@@ -71,6 +71,10 @@ textarea {
   background-color: var(--color-error);
 }
 
+.toast-info {
+  background-color: var(--color-input-background);
+}
+
 .toast-title {
   margin-top: 0.1rem;
 }
