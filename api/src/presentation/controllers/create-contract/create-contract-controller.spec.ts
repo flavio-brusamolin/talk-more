@@ -1,7 +1,7 @@
 import { CreateContractController, CreateContractModel } from './create-contract-controller'
 import { HttpRequest, Validator } from '../../protocols'
 import { MissingParamError, InvalidParamError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, serverError, ok } from '../../helpers/http-helper'
 import { SubscribePlan, SubscribePlanModel } from '../../../domain/use-cases/subscribe-plan'
 import { User } from '../../../domain/models/user'
 
@@ -112,5 +112,14 @@ describe('CreateContract Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(badRequest(new InvalidParamError('planId')))
+  })
+
+  test('Should return an ok response on success', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(ok(makeFakeUser()))
   })
 })
