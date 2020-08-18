@@ -13,6 +13,6 @@ export class PlanMongoRepository implements LoadPlansRepository, LoadPlanByIdRep
   public async loadById (id: string): Promise<Plan> {
     const planCollection = await MongoHelper.getCollection('plans')
     const planRecord = await planCollection.findOne({ _id: new ObjectId(id) })
-    return MongoHelper.map(planRecord)
+    return planRecord && MongoHelper.map(planRecord)
   }
 }
