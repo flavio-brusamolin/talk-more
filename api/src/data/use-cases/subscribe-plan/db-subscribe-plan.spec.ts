@@ -116,4 +116,13 @@ describe('DbSubscribePlan Use Case', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a user on success', async () => {
+    const { sut } = makeSut()
+
+    const subscriptionData = makeFakeSubscriptionData()
+    const user = await sut.subscribe(subscriptionData)
+
+    expect(user).toEqual(makeFakeUser())
+  })
 })
