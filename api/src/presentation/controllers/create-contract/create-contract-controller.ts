@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, HttpRequest, Validator } from '../../protocols'
 import { badRequest, serverError } from '../../helpers/http-helper'
 import { SubscribePlan } from '../../../domain/use-cases/subscribe-plan'
+import { InvalidParamError } from '../../errors'
 
 export interface CreateContractModel {
   planId: string
@@ -15,6 +16,9 @@ export class CreateContractController implements Controller {
   public async handle (httpRequest: HttpRequest<CreateContractModel>): Promise<HttpResponse> {
     try {
       const error = this.validator.validate(httpRequest.body)
+      if (error) {
+        return badRequest(error)
+      }
 
       const { userId } = httpRequest
       const { planId } = httpRequest.body
@@ -24,7 +28,7 @@ export class CreateContractController implements Controller {
         planId
       })
 
-      return badRequest(error)
+      return badRequest(new InvalidParamError('planId'))
     } catch (error) {
       console.error(error)
       return serverError()
