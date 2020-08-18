@@ -46,4 +46,12 @@ describe('DbCheckUserAuthentication Use Case', () => {
 
     expect(id).toBeNull()
   })
+
+  test('Should return an id on success', async () => {
+    const { sut } = makeSut()
+
+    const id = await sut.checkAuthentication('any_token')
+
+    expect(id).toBe('any_id')
+  })
 })
