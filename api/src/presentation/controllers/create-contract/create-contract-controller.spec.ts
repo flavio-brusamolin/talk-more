@@ -1,14 +1,23 @@
 import { CreateContractController, CreateContractModel } from './create-contract-controller'
 import { HttpRequest, Validator } from '../../protocols'
-import { MissingParamError } from '../../errors'
+import { MissingParamError, InvalidParamError } from '../../errors'
 import { badRequest, serverError } from '../../helpers/http-helper'
 import { SubscribePlan, SubscribePlanModel } from '../../../domain/use-cases/subscribe-plan'
+import { User } from '../../../domain/models/user'
 
 const makeFakeRequest = (): HttpRequest<CreateContractModel> => ({
   body: {
     planId: 'any_plan_id'
   },
   userId: 'any_user_id'
+})
+
+const makeFakeUser = (): User => ({
+  id: 'any_user_id',
+  name: 'any_name',
+  email: 'any_email@mail.com',
+  password: 'any_password',
+  planId: 'any_plan_id'
 })
 
 const makeValidator = (): Validator => {
@@ -23,7 +32,9 @@ const makeValidator = (): Validator => {
 
 const makeSubscribePlan = (): SubscribePlan => {
   class SubscribePlanStub implements SubscribePlan {
-    public async subscribe (_subscriptionData: SubscribePlanModel): Promise<void> {}
+    public async subscribe (_subscriptionData: SubscribePlanModel): Promise<User> {
+      return makeFakeUser()
+    }
   }
 
   return new SubscribePlanStub()
@@ -91,5 +102,15 @@ describe('CreateContract Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(httpResponse).toEqual(serverError())
+  })
+
+  test('Should return a badRequest error if SubscribePlan returns null', async () => {
+    const { sut, subscribePlanStub } = makeSut()
+    jest.spyOn(subscribePlanStub, 'subscribe').mockReturnValueOnce(null)
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('planId')))
   })
 })
