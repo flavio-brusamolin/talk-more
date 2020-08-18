@@ -1,7 +1,7 @@
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AddUserModel } from '../../../../domain/use-cases/add-user'
 import { UserMongoRepository } from './user-mongo-repository'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 
 const makeSut = (): UserMongoRepository => {
   return new UserMongoRepository()
@@ -86,7 +86,7 @@ describe('User Mongo Repository', () => {
 
   test('Should return null if loadById fails', async () => {
     const sut = makeSut()
-    const user = await sut.loadById('any_id')
+    const user = await sut.loadById(new ObjectId().toHexString())
     expect(user).toBeFalsy()
   })
 })
