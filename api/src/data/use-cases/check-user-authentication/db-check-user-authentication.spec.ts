@@ -35,4 +35,15 @@ describe('DbCheckUserAuthentication Use Case', () => {
 
     expect(decryptSpy).toHaveBeenCalledWith('any_token')
   })
+
+  test('Should return null if Decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const id = await sut.checkAuthentication('any_token')
+
+    expect(id).toBeNull()
+  })
 })
