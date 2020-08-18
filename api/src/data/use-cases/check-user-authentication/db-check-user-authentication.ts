@@ -6,7 +6,7 @@ export class DbCheckUserAuthentication implements CheckUserAuthentication {
 
   public async checkAuthentication (token: string): Promise<string> {
     try {
-      await this.decrypter.decrypt(token)
+      return await this.decrypter.decrypt(token)
     } catch (error) {
       console.error(error)
       return null
