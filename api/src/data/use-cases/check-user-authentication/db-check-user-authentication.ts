@@ -5,8 +5,11 @@ export class DbCheckUserAuthentication implements CheckUserAuthentication {
   public constructor (private readonly decrypter: Decrypter) {}
 
   public async checkAuthentication (token: string): Promise<string> {
-    await this.decrypter.decrypt(token)
-
-    return null
+    try {
+      await this.decrypter.decrypt(token)
+    } catch (error) {
+      console.error(error)
+      return null
+    }
   }
 }
