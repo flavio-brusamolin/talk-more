@@ -1,5 +1,7 @@
 import { CreateContractController, CreateContractModel } from './create-contract-controller'
 import { HttpRequest, Validator } from '../../protocols'
+import { MissingParamError } from '../../errors'
+import { badRequest } from '../../helpers/http-helper'
 
 const makeFakeRequest = (): HttpRequest<CreateContractModel> => ({
   body: {
@@ -41,5 +43,15 @@ describe('CreateContract Controller', () => {
     await sut.handle(httpRequest)
 
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return a bad request error if Validator returns an error', async () => {
+    const { sut, validatorStub } = makeSut()
+    jest.spyOn(validatorStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 })
