@@ -31,7 +31,8 @@
         "allowArgumentsExplicitlyTypedAsAny": true
       }
     ],
-    "@typescript-eslint/no-empty-function": "off"
+    "@typescript-eslint/no-empty-function": "off",
+    "no-return-assign": "off"
   },
   "overrides": [
     {
