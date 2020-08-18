@@ -8,7 +8,6 @@ export class DbCheckUserAuthentication implements CheckUserAuthentication {
     try {
       return await this.decrypter.decrypt(token)
     } catch (error) {
-      console.error(error)
       return null
     }
   }
