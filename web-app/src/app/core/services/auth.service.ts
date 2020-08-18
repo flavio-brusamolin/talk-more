@@ -5,7 +5,7 @@ import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 
 import { environment } from 'src/environments/environment'
-import { SignUpData, SignInData, Token } from 'src/app/data/models'
+import { SignUpData, SignInData, Token, User } from 'src/app/data/models'
 
 @Injectable()
 export class AuthService {
@@ -23,6 +23,10 @@ export class AuthService {
     return this.http
       .post<Token>(`${this.url}/signup`, userData)
       .pipe(tap(({ accessToken }) => this.setToken(accessToken)))
+  }
+
+  loadLoggedUser (): Observable<User> {
+    return this.http.get<User>(`${this.url}/me`)
   }
 
   getToken (): string {
