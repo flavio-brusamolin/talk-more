@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, HttpRequest, Validator } from '../../protocols'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, serverError, ok } from '../../helpers/http-helper'
 import { SubscribePlan } from '../../../domain/use-cases/subscribe-plan'
 import { InvalidParamError } from '../../errors'
 
@@ -23,12 +23,15 @@ export class CreateContractController implements Controller {
       const { userId } = httpRequest
       const { planId } = httpRequest.body
 
-      await this.subscribePlan.subscribe({
+      const user = await this.subscribePlan.subscribe({
         userId,
         planId
       })
+      if (!user) {
+        return badRequest(new InvalidParamError('planId'))
+      }
 
-      return badRequest(new InvalidParamError('planId'))
+      return ok(user)
     } catch (error) {
       console.error(error)
       return serverError()
