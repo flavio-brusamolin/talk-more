@@ -62,4 +62,14 @@ describe('DbSubscribePlan Use Case', () => {
 
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if LoadPlanByIdRepository returns null', async () => {
+    const { sut, loadPlanByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadPlanByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
+
+    const subscriptionData = makeFakeSubscriptionData()
+    const user = await sut.subscribe(subscriptionData)
+
+    expect(user).toBeNull()
+  })
 })
