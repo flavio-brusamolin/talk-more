@@ -1,7 +1,7 @@
 import { CreateContractController, CreateContractModel } from './create-contract-controller'
 import { HttpRequest, Validator } from '../../protocols'
 import { MissingParamError } from '../../errors'
-import { badRequest } from '../../helpers/http-helper'
+import { badRequest, serverError } from '../../helpers/http-helper'
 import { SubscribePlan, SubscribePlanModel } from '../../../domain/use-cases/subscribe-plan'
 
 const makeFakeRequest = (): HttpRequest<CreateContractModel> => ({
@@ -79,5 +79,17 @@ describe('CreateContract Controller', () => {
       userId: 'any_user_id',
       planId: 'any_plan_id'
     })
+  })
+
+  test('Should return an internal server error if SubscribePlan throws', async () => {
+    const { sut, subscribePlanStub } = makeSut()
+    jest.spyOn(subscribePlanStub, 'subscribe').mockImplementationOnce(() => {
+      throw new Error()
+    })
+
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse).toEqual(serverError())
   })
 })
