@@ -60,4 +60,23 @@ describe('Plan Mongo Repository', () => {
     const plans = await sut.loadAll()
     expect(plans.length).toBe(0)
   })
+
+  test('Should return a plan on loadById success', async () => {
+    const sut = makeSut()
+
+    const result = await planCollection.insertOne({
+      name: 'any_name',
+      minutes: 30,
+      price: 50
+    })
+    const [planRecord] = result.ops
+
+    const plan = await sut.loadById(planRecord._id)
+
+    expect(plan).toBeTruthy()
+    expect(plan.id).toEqual(planRecord._id)
+    expect(plan.name).toBe('any_name')
+    expect(plan.minutes).toBe(30)
+    expect(plan.price).toBe(50)
+  })
 })
