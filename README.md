@@ -5,10 +5,11 @@ Telzir cell phone plans.
 * Docker Engine
 * Docker Compose
 
-## Installation
+## Installation (development)
 ```
 docker-compose up -d
 ```
+Access on localhost:4200
 
 ## Test
 ```
