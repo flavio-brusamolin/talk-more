@@ -29,6 +29,7 @@
   text-decoration: none;
   transition: opacity 0.2s;
   color: var(--color-text-base);
+  margin-bottom: 0;
 }
 
 .top-navbar .nav-container .nav-options .option-text label {
