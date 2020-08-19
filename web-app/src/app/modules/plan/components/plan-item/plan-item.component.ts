@@ -81,7 +81,7 @@ export class PlanItemComponent implements OnInit {
     if (extraMinutes <= 0) {
       this.resultWithPlan = 0
     } else {
-      this.resultWithPlan = Number((extraMinutes * tariff * 1.1).toFixed())
+      this.resultWithPlan = Number((extraMinutes * tariff * 1.1).toFixed(2))
     }
   }
 
