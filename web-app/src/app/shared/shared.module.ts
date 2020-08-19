@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { ReactiveFormsModule } from '@angular/forms'
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+
 import { LoginContainerComponent } from './login-container/login-container.component'
 import { InputComponent } from './input/input.component'
 
@@ -18,6 +20,8 @@ import { InputComponent } from './input/input.component'
   exports: [
     CommonModule,
     ReactiveFormsModule,
+
+    NgbModule,
 
     LoginContainerComponent,
     InputComponent
