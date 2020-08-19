@@ -28,13 +28,14 @@ export class PlanItemComponent implements OnInit {
   origins = [...new Set(callValues.map(item => item.origin))]
   destinations = [...new Set(callValues.map(item => item.destination))]
 
-  resultWithPlan: number = null
-  resultWithoutPlan: number = null
+  resultWithPlan: string = null
+  resultWithoutPlan: string = null
 
   constructor (
     private formBuilder: FormBuilder,
     private modal: NgbModal,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit (): void {
     this.initializeForms()
@@ -44,34 +45,30 @@ export class PlanItemComponent implements OnInit {
     this.form = this.formBuilder.group({
       origin: [null, Validators.required],
       destination: [null, Validators.required],
-      minutes: [null, Validators.required]
+      minutes: [null, [Validators.required, Validators.min(1)]]
     })
   }
 
   openSimulationModal (content: any): void {
-    this.modal.open(content, {
-      centered: true
-    })
+    this.modal.open(content, { centered: true })
       .result.then(
         () => {},
         () => {
           this.form.reset()
-          this.resultWithPlan = null
-          this.resultWithoutPlan = null
+          this.resetResults()
         }
       )
   }
 
   calculate ({ origin, destination, minutes }: Operators): void {
-    const [callValue] = callValues.filter(item => item.origin === origin && item.destination === destination)
+    const [call] = callValues.filter(item => item.origin === origin && item.destination === destination)
 
-    if (!callValue) {
+    if (!call) {
       this.toastr.error('Combinação de DDDs inválida', 'Erro!')
-      this.resultWithPlan = null
-      this.resultWithoutPlan = null
+      this.resetResults()
     } else {
-      this.calculateWithPlan(callValue.tariff, minutes)
-      this.calculateWithoutPlan(callValue.tariff, minutes)
+      this.calculateWithPlan(call.tariff, minutes)
+      this.calculateWithoutPlan(call.tariff, minutes)
     }
   }
 
@@ -79,14 +76,19 @@ export class PlanItemComponent implements OnInit {
     const extraMinutes = minutes - this.plan.minutes
 
     if (extraMinutes <= 0) {
-      this.resultWithPlan = 0
+      this.resultWithPlan = '0'
     } else {
-      this.resultWithPlan = Number((extraMinutes * tariff * 1.1).toFixed(2))
+      this.resultWithPlan = (extraMinutes * tariff * 1.1).toFixed(2)
     }
   }
 
   private calculateWithoutPlan (tariff: number, minutes: number): void {
-    this.resultWithoutPlan = Number((tariff * minutes).toFixed(2))
+    this.resultWithoutPlan = (tariff * minutes).toFixed(2)
+  }
+
+  private resetResults (): void {
+    this.resultWithPlan = null
+    this.resultWithoutPlan = null
   }
 
   subscribePlan (planId: string): void {

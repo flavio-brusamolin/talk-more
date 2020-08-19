@@ -45,7 +45,7 @@
       </button>
     </form>
 
-    <div class="result" *ngIf="resultWithPlan !== null && resultWithoutPlan !== null">
+    <div class="result" *ngIf="resultWithPlan && resultWithoutPlan">
       <div>
         Com {{ plan.name }} <br>
         <label>R$ {{ resultWithPlan }} / mês</label>
