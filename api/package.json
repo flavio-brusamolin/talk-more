@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "Cell phone plans from Telzir - API.",
+  "description": "Telzir cell phone plans - API.",
   "author": "Flávio Brusamolin",
   "license": "MIT",
   "scripts": {
