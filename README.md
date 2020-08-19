@@ -1,35 +1,22 @@
 # Talk More
-
-Cell phone plans from Telzir.
+Telzir cell phone plans.
 
 ## Prerequisites
-
 * Docker Engine
 * Docker Compose
 
 ## Installation
-
 ```
 docker-compose up -d
 ```
 
 ## Test
-
 ```
 cd api/
-```
-
-* General test
-```
 npm test
-```
-
-* Unit test
-```
 npm run test:unit
-```
-
-* Integration test
-```
 npm run test:integration
 ```
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
