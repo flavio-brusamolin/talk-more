@@ -14,8 +14,53 @@
   </main>
 
   <footer>
+    <a (click)="openSimulationModal(simulationModal)">Simular &#10148;</a>
     <button type="button" (click)="subscribePlan(plan.id)" [ngClass]="{'disabled': current}">
       {{ current ? 'Meu plano' : 'Assinar' }}
     </button>
   </footer>
 </article>
+
+<ng-template #simulationModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ plan.name }}</h4>
+  </div>
+
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="calculate(form.value)">
+      <div class="select-group">
+        <ng-select appendTo="body" [items]="origins" [hideSelected]="true" placeholder="DDD Origem"
+          notFoundText="Item não encontrado" formControlName="origin">
+        </ng-select>
+
+        <ng-select appendTo="body" [items]="destinations" [hideSelected]="true" placeholder="DDD Destino"
+          notFoundText="Item não encontrado" formControlName="destination">
+        </ng-select>
+      </div>
+
+      <app-input label="Duração (min)" name="minutes" type="number" formControlName="minutes"></app-input>
+
+      <button type="submit" [disabled]="!form.valid">
+        Calcular
+      </button>
+    </form>
+
+    <div class="result" *ngIf="resultWithPlan !== null && resultWithoutPlan !== null">
+      <div>
+        Com {{ plan.name }} <br>
+        <label>R$ {{ resultWithPlan }} / mês</label>
+      </div>
+
+      <div>
+        Sem {{ plan.name }} <br>
+        <label>R$ {{ resultWithoutPlan }} / mês</label>
+      </div>
+    </div>
+
+    <small>Obs: A simulação não leva em consideração o custo de aquisição do plano.</small>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" (click)="modal.dismiss()">Fechar</button>
+  </div>
+</ng-template>

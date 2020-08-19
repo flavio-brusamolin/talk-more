@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router'
 import { ReactiveFormsModule } from '@angular/forms'
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgSelectModule } from '@ng-select/ng-select'
 
 import { LoginContainerComponent } from './login-container/login-container.component'
 import { InputComponent } from './input/input.component'
@@ -22,6 +23,7 @@ import { InputComponent } from './input/input.component'
     ReactiveFormsModule,
 
     NgbModule,
+    NgSelectModule,
 
     LoginContainerComponent,
     InputComponent

@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~@ng-select/ng-select/themes/material.theme.css";
 @import '~ngx-toastr/toastr';
 
 :root {
@@ -83,4 +84,45 @@ textarea {
 .toast-message {
   margin-top: 0.1rem;
   margin-bottom: 0.2rem;
+}
+
+/* NgbModal custom style */
+.modal-content {
+  background-color: var(--color-card) !important;
+}
+
+.modal-header {
+  padding: 2rem 3rem;
+  border-bottom-color: var(--color-line-divider);
+}
+
+.modal-body {
+  padding: 3rem;
+}
+
+.modal-footer {
+  padding: 2rem 3rem;
+  border-top-color: var(--color-line-divider);
+}
+
+/* NgSelect custom style */
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
+  color: var(--color-dark-white) !important;
+  font-size: 1.4rem;
+}
+
+.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder {
+  transform: translateY(-1.28125em) scale(0.9) perspective(100px) translateZ(0.001px);
+}
+
+.ng-select.ng-select-focused .ng-select-container:after {
+  border-color: var(--color-primary) !important;
+}
+
+.ng-select.ng-select-focused .ng-select-container .ng-arrow-wrapper .ng-arrow {
+  color: var(--color-primary) !important;
+}
+
+.ng-select.ng-select-single .ng-select-container .ng-value-container, .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  color: var(--color-text-base);
 }
