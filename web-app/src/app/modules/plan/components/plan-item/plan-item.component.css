@@ -104,6 +104,7 @@
 }
 
 .modal-body form .select-group ng-select + ng-select {
+  margin-right: 0;
   margin-left: 1rem;
 }
 
@@ -141,7 +142,7 @@
   font-size: 1.5rem;
 }
 
-.modal-body .result label {
+.modal-body .result div label {
   color: var(--color-primary);
   margin-top: 0.5rem;
 }
