@@ -9,7 +9,7 @@ Telzir cell phone plans.
 ```
 docker-compose up -d
 ```
-Access on localhost:4200
+Access on http://localhost:4200
 
 ## Test
 ```
